@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+# WARNING !!!! 
+# host computer needs to run `xhost +` before anything
+# TODO: Set in script, manage permissions
+
+CONTAINER_TAG=ros2_gazebo
+# Gets the current script absolute path
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+echo $SCRIPT_DIR
+
+# Gets the docker command
+command -v docker && CONTAINER_CMD=docker || CONTAINER_CMD=podman
+
+# If we do not explicity create the workspace dir, docker will create it
+# with root permissions -> bad
+if [ ! -d "$SCRIPT_DIR/ros2_ws" ]; then
+    mkdir "$SCRIPT_DIR/ros2_ws" 
+fi
+
+USERNAME=$(whoami)
+USER_UID=$(id -u $USER)
+USER_GID=$(id -g $USER)
+
+# OLD
+# TODO: adapt code for docker, `image exists` only works in podman
+# if [[ $($CONTAINER_CMD image exists $CONTAINER_TAG; echo $?) != 0 ]] || [ "$1" == "--rebuild" ]; then
+
+# Build image if prompted to
+if [ "$1" == "build" ]; then
+    echo "${BUILD_ARGS[@]}" 
+    $CONTAINER_CMD build "${BUILD_ARGS[@]}" --tag $CONTAINER_TAG $SCRIPT_DIR
+fi
+
+CONTAINER_ID=$($CONTAINER_CMD ps -f ancestor=$CONTAINER_TAG -q)
+if [ "$CONTAINER_ID" == "" ]; then
+    # Container is not running, launch it
+    RUN_ARGS=(\
+    --workdir="/home/$USER"  \
+        --volume="$SCRIPT_DIR/ros2_ws:/home/$USER/ros2_ws:rw" \
+        --env="DISPLAY" \
+        --env="QT_X11_NO_MITSHM=1" \
+        --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+        # This will maybe be needed 
+        # --privileged \
+    --network=host \
+        --cap-add=SYS_PTRACE \
+        --security-opt=seccomp:unconfined \
+        --security-opt=apparmor:unconfined \
+        --ipc=host \
+        --device=/dev/dri \
+    )
+    echo "${RUN_ARGS[@]}" 
+    $CONTAINER_CMD run "${RUN_ARGS[@]}" -it $CONTAINER_TAG
+else
+    # Container is already running, attach shell
+    RUN_ARGS=(\
+        --workdir="/home/$USER"  \
+        --env="QT_X11_NO_MITSHM=1" \
+        --env="DISPLAY=$DISPLAY" \
+        # --privileged \
+    )
+    echo "${RUN_ARGS[@]}" 
+    $CONTAINER_CMD exec "${RUN_ARGS[@]}" -it $CONTAINER_ID bash
+fi
