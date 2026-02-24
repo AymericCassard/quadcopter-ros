@@ -13,6 +13,11 @@ TODO: set GZ_VERSION dans un hook colcon
 `source install/setup.sh`
 ## Lancer la simulation
 `ros2 launch ros_gz_example_bringup X3.launch.py`
+## Envoyer un message de controle du drone via Ros2
+`ros2 topic pub /X3/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0, y: 0, z: 0.1}, angular: {z: 0}}" -1`
+## Lancer le service du contrôle du drone avec le clavier
+`ros2 run teleop_twist_keyboard teleop_twist_keyboard`
+
 # Une fois le container fermé
 `xhost -`
 Pour des raisons de securité
