@@ -23,8 +23,12 @@ USER $USERNAME
 #RUN sudo apt update && sudo apt upgrade -y
 RUN sudo apt update && sudo apt upgrade -y
 
+# Gazebo harmonic prerequisites https://gazebosim.org/docs/harmonic/install_ubuntu/ 
+RUN sudo apt-get install curl lsb-release gnupg && sudo curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
+&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] https://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
+
 # Rosdep update and Gazebo installation + necessary ros packages
-RUN rosdep update --rosdistro=${ROS_DISTRO} && sudo apt-get install -y ros-${ROS_DISTRO}-ros-gz '~nros-jazzy-rqt*' 
+RUN sudo apt update && rosdep update --rosdistro=${ROS_DISTRO} && sudo apt-get install -y gz-harmonic ros-${ROS_DISTRO}-ros-gz '~nros-jazzy-rqt*' 
 
 # Source the ROS setup file
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc && mkdir ~/ros2_ws
