@@ -234,5 +234,14 @@
         </include>
     </model>
 
+    <model name="humanoid_robot">
+      <self_collide>true</self_collide>
+      <!-- <pose>6.00 0 0.35 0 0 1.57</pose> -->
+      <pose>6.00 0 0 0 0 1.57</pose>
+      <include merge="true">
+        <uri>package://ros_gz_description/models/humanoid_robot</uri>
+        </include>
+    </model>
+
   </world>
 </sdf>
