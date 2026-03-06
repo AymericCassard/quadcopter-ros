@@ -1,0 +1,8 @@
+argcomplete
+catkin_pkg
+rospkg
+av
+image
+opencv-python
+djitellopy2
+pyyaml

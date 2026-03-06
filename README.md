@@ -3,6 +3,11 @@
 # Lancer le container
 `./launchRos2`
 # Une fois le container lancé
+## Fix dependencies
+`PIP_BREAK_SYSTEM_PACKAGES=1 sudo -H --preserve-env=PIP_BREAK_SYSTEM_PACKAGES pip3 install -U --no-deps djitellopy2`
+followed by
+`sudo ln -s /usr/lib/python3/dist-packages/numpy/core/include/numpy/ /usr/include/numpy`
+TODO: Automatize
 ## Avant toute opération
 `cd ros2_ws/`
 `export GZ_VERSION=harmonic`

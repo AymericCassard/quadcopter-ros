@@ -18,7 +18,8 @@ if [ ! -d "$SCRIPT_DIR/ros2_ws" ]; then
     mkdir "$SCRIPT_DIR/ros2_ws" 
 fi
 
-USERNAME=$(whoami)
+# USERNAME=$(whoami)
+USERNAME=ubuntu
 USER_UID=$(id -u $USER)
 USER_GID=$(id -g $USER)
 
@@ -36,8 +37,8 @@ CONTAINER_ID=$($CONTAINER_CMD ps -f ancestor=$CONTAINER_TAG -q)
 if [ "$CONTAINER_ID" == "" ]; then
     # Container is not running, launch it
     RUN_ARGS=(\
-    --workdir="/home/$USER"  \
-        --volume="$SCRIPT_DIR/ros2_ws:/home/$USER/ros2_ws:rw" \
+    --workdir="/home/$USERNAME"  \
+        --volume="$SCRIPT_DIR/ros2_ws:/home/$USERNAME/ros2_ws:rw" \
         --env="DISPLAY" \
         --env="QT_X11_NO_MITSHM=1" \
         --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
@@ -51,11 +52,11 @@ if [ "$CONTAINER_ID" == "" ]; then
         --device=/dev/dri \
     )
     echo "${RUN_ARGS[@]}" 
-    $CONTAINER_CMD run "${RUN_ARGS[@]}" -it $CONTAINER_TAG
+    $CONTAINER_CMD run "${RUN_ARGS[@]}" -it $CONTAINER_TAG bash
 else
     # Container is already running, attach shell
     RUN_ARGS=(\
-        --workdir="/home/$USER"  \
+        --workdir="/home/$USERNAME"  \
         --env="QT_X11_NO_MITSHM=1" \
         --env="DISPLAY=$DISPLAY" \
         # --privileged \

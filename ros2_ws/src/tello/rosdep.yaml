@@ -1,0 +1,12 @@
+python-av:
+ ubuntu:
+  pip:
+   packages: [av]
+python-image:
+ ubuntu:
+  pip:
+   packages: [image]
+python-djitellopy2:
+ ubuntu:
+  pip:
+   packages: [djitellopy2]
