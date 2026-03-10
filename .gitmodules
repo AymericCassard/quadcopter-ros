@@ -1,0 +1,3 @@
+[submodule "ros2_ws/src/image2rtsp"]
+	path = ros2_ws/src/image2rtsp
+	url = https://github.com/maladzenkau/image2rtsp.git

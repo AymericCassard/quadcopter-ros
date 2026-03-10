@@ -1,27 +1,26 @@
 # Avant de lancer le docker ROS2 
 `xhost +`
+TODO: Find a way to do it in launchRos2
 # Lancer le container
 `./launchRos2`
+
+Les dépendances (apt, pip) sont gérées dans le Dockerfile a l'aide de l'outil 
+Rosdep
+Chaque paquet Ros a sa liste de dependances dans son package.xml
+
 # Une fois le container lancé
-## Fix dependencies
-`PIP_BREAK_SYSTEM_PACKAGES=1 sudo -H --preserve-env=PIP_BREAK_SYSTEM_PACKAGES pip3 install -U --no-deps djitellopy2`
-followed by
-`sudo ln -s /usr/lib/python3/dist-packages/numpy/core/include/numpy/ /usr/include/numpy`
-TODO: Automatize
-## Avant toute opération
-`cd ros2_ws/`
-`export GZ_VERSION=harmonic`
-TODO: set GZ_VERSION dans un hook colcon
 ## Compiler le code ROS2
 `colcon build --cmake-args -DBUILD_TESTING=ON`
 ## Sourcer l'environnement ROS2 produit
 `source install/setup.sh`
 ## Lancer la simulation
-`ros2 launch ros_gz_example_bringup X3.launch.py`
+`ros2 launch ros_gz_bringup X3_wall.launch.py`
 ## Envoyer un message de controle du drone via Ros2
 `ros2 topic pub /X3/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0, y: 0, z: 0.1}, angular: {z: 0}}" -1`
 ## Lancer le service du contrôle du drone avec le clavier
 `ros2 run teleop_twist_keyboard teleop_twist_keyboard`
+## Lancer le streaming du flux video Simu/Vrai drone vers RTSP
+`ros2 launch image2rtsp image2rtsp.launch.py`
 
 # Une fois le container fermé
 `xhost -`
