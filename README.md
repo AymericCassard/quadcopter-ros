@@ -19,6 +19,8 @@ Chaque paquet Ros a sa liste de dependances dans son package.xml
 `ros2 topic pub /X3/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0, y: 0, z: 0.1}, angular: {z: 0}}" -1`
 ## Lancer le service du contrôle du drone avec le clavier
 `ros2 run teleop_twist_keyboard teleop_twist_keyboard`
+## Lancer le streaming du flux video Simu/Vrai drone via UDP
+`ros2 run image2udp image2udp`
 ## Lancer le streaming du flux video Simu/Vrai drone vers RTSP
 `ros2 launch image2rtsp image2rtsp.launch.py`
 
