@@ -19,7 +19,9 @@ class Image2udp(Node):
             10)
         self.subscription  # prevent unused variable warning
         self.bridge = CvBridge()
-        self.video_service = UdpVideoService(host="127.0.0.1")
+        # self.video_service = UdpVideoService(host="127.0.0.1")
+        # self.video_service = UdpVideoService(host="0.0.0.0")
+        self.video_service = UdpVideoService(host="192.168.1.182")  # Phone's address
 
     def listener_callback(self, img_msg):
         # self.get_logger().info('I heard a message' % img_msg.data)

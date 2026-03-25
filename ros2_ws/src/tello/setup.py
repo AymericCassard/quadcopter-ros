@@ -1,4 +1,8 @@
+import os
+from glob import glob
 from setuptools import setup
+
+package_name="tello"
 
 setup(
     name='tello',
@@ -7,6 +11,8 @@ setup(
     data_files=[
         ('share/ament_index/resource_index/packages', ['resource/tello']),
         ('share/tello', ['package.xml', 'resource/ost.txt', 'resource/ost.yaml']),
+        # Include all launch files.
+        (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.[pxy][yma]*')))
     ],
     install_requires=['setuptools'],
     zip_safe=True,

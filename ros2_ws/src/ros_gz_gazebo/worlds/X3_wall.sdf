@@ -228,7 +228,7 @@
 
     <model name="grey_wall">
       <self_collide>true</self_collide>
-      <pose>4.00 0 0.35 0 0 1.57</pose>
+      <pose>4.00 0 0 0 0 1.57</pose>
       <include merge="true">
         <uri>package://ros_gz_description/models/grey_wall</uri>
         </include>
