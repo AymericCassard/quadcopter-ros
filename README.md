@@ -1,6 +1,6 @@
 # Architecture
 
-<img src="readme/architecture.jpg" width="380">
+<img src="readme/architecture.png" width="380">
 
 # Usage
 Les commandes suivantes supposent un environnement linux.
