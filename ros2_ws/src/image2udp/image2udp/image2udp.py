@@ -1,35 +1,37 @@
 import rclpy
+from cv_bridge import CvBridge
 from rclpy.node import Node
+from sensor_msgs.msg import Image
 
 from image2udp.udp_video_service import UdpVideoService
 
-from cv_bridge import CvBridge
-from sensor_msgs.msg import Image
-
 
 class Image2udp(Node):
-
     def __init__(self):
-        super().__init__('minimal_subscriber')
-        # TODO: Set topic as parameter
+        super().__init__("minimal_subscriber")
+
+        # Default is from Simu to my phone
+        self.declare_parameter("topic", "/camera/camera_image")
+        self.declare_parameter("target_ip", "10.54.117.130")
+
+        self.topic = self.get_parameter("topic").get_parameter_value().string_value
+        self.target_ip = (
+            self.get_parameter("target_ip").get_parameter_value().string_value
+        )
+
         self.subscription = self.create_subscription(
             Image,
-            '/camera/camera_image',
+            self.topic,
             self.listener_callback,
-            10)
+            10,
+        )
         self.subscription  # prevent unused variable warning
         self.bridge = CvBridge()
-        # self.video_service = UdpVideoService(host="127.0.0.1")
-        # self.video_service = UdpVideoService(host="0.0.0.0")
-        self.video_service = UdpVideoService(host="192.168.1.182")  # Phone's address
+        self.video_service = UdpVideoService(host=self.target_ip)
 
     def listener_callback(self, img_msg):
-        # self.get_logger().info('I heard a message' % img_msg.data)
-        # self.get_logger().info(f'Message type: {type(img_msg.data)}')
-        cv_image = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding='passthrough')
+        cv_image = self.bridge.imgmsg_to_cv2(img_msg, desired_encoding="passthrough")
         self.video_service.send(cv_image)
-        # self.get_logger().info('IMAGE SENT')
-
 
 
 def main(args=None):
@@ -37,8 +39,9 @@ def main(args=None):
 
     minimal_subscriber = Image2udp()
 
-    # TODO: Parameterize
-    minimal_subscriber.get_logger().info('image server started at: 127.0.0.1:8554')
+    minimal_subscriber.get_logger().info(
+        f"Streaming {minimal_subscriber.topic} to {minimal_subscriber.target_ip}:8554"
+    )
     rclpy.spin(minimal_subscriber)
 
     # Destroy the node explicitly
@@ -48,5 +51,5 @@ def main(args=None):
     rclpy.shutdown()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

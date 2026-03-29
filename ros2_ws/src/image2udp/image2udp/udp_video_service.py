@@ -16,7 +16,8 @@ from cv2 import imencode
 # }
 HEADER_FORMAT = "!IHH"
 HEADER_SIZE = struct.calcsize(HEADER_FORMAT)
-MAX_PACKET_SIZE = 60_000 #TODO: Mettre un comment (60_000 parce que teste manuel = ">65000 => Crash")
+# MAX_PACKET_SIZE = 60_000 #TODO: Mettre un comment (60_000 parce que teste manuel = ">65000 => Crash")
+MAX_PACKET_SIZE = 1400 #TODO: Mettre un comment (60_000 parce que teste manuel = ">65000 => Crash")
 MAX_CHUNK_SIZE = MAX_PACKET_SIZE - HEADER_SIZE
 
 

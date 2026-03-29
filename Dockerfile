@@ -46,4 +46,5 @@ RUN rosdep update && \
 RUN cat << 'EOF' > ~/.bashrc && mkdir ~/ros2_ws  
 source /opt/ros/${ROS_DISTRO}/setup.bash 
 export GZ_VERSION=harmonic
+cd ~/ros2_ws
 EOF

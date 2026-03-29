@@ -1,0 +1,7 @@
+/image2udp:
+   ros__parameters:
+     # Source topic
+     topic:            "/camera/camera_image"
+     # Streaming towards this IP
+     target_ip:        "10.54.117.130"  # My phone address when it is used
+                                        # as hotspot

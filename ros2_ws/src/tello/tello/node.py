@@ -308,17 +308,7 @@ class TelloNode():
     #
     # The drone will be restarted after the credentials are changed.
     def cb_wifi_config(self, msg):
-        # self.tello.set_wifi_credentials(msg.ssid, msg.password)
-        # AC: set_wifi_credential is used to change the drone's hotspot SSID
-        #     connect_to_wifi allows to connect the tello EDU to our network
-        self.node.get_logger().info('Tello: connecting to network')
-        self.tello.connect_to_wifi(msg.ssid, msg.password)
-    
-    # Perform a drone flip in a direction specified.
-    # 
-    # Directions can be "r" for right, "l" for left, "f" for forward or "b" for backward.
-    def cb_flip(self, msg):
-        self.tello.flip(msg.data)
+        self.tello.set_wifi_credentials(msg.ssid, msg.password)
 
 # Convert a rotation from euler to quaternion.
 def euler_to_quaternion(r):
